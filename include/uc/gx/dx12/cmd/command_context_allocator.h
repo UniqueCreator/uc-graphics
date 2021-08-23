@@ -62,7 +62,7 @@ namespace uc
                 {
                     m_command_manager->sync();
 
-                    m_context_index = (m_context_index + 1 ) % 3;
+                    m_context_index = (m_context_index + 1 ) % 2;
 
                     //todo: flush these less often
                     auto&& free = m_free_contexts[m_context_index];
@@ -76,11 +76,11 @@ namespace uc
                 gpu_command_manager*                                        m_command_manager;  //allocate command lists here
                 gpu_command_queue*                                          m_command_queue;    //submit command lists here
 
-                uint64_t                                                    m_context_index = 2;
+                uint64_t                                                    m_context_index = 1;
                 
 
                 std::mutex                                                  m_pool_lock;
-                std::queue< std::unique_ptr<gpu_base_command_context> >     m_free_contexts[3];
+                std::queue< std::unique_ptr<gpu_base_command_context> >     m_free_contexts[2];
             };
         }
     }
