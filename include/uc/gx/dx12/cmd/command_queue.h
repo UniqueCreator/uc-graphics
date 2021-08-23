@@ -25,6 +25,11 @@ namespace uc
                 void signal_fence(uint64_t value);
 
                 public:
+                enum class present_option : uint32_t
+                {
+                    wait_for_vsync,
+                    do_not_wait_for_vsync
+                };
 
                 gpu_command_queue(  ID3D12Device* d, ID3D12CommandQueue*  q ) :
                       m_queue(q)
@@ -107,10 +112,11 @@ namespace uc
                     }
                 }
 
-                void present( IDXGISwapChain1* swap_chain )
+                void present( IDXGISwapChain1* swap_chain, present_optiono)
                 {
                     std::unique_lock< std::mutex > g(m_queue_mutex);
-                    auto hr = swap_chain->Present(0, 0); // we do not block on vsync now, this wastes energy and reduces latency, should work only on power unconstrained modes
+                    const UINT op = o == present_option::wait_for_vsync ? 1 : 0;
+                    auto hr = swap_chain->Present(op, 0); // we do not block on vsync now, this wastes energy and reduces latency, should work only on power unconstrained modes
 
                     if (hr == DXGI_STATUS_OCCLUDED)
                     {
