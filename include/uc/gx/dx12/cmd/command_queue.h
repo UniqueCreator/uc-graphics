@@ -112,7 +112,7 @@ namespace uc
                     }
                 }
 
-                void present( IDXGISwapChain1* swap_chain, present_optiono)
+                void present( IDXGISwapChain1* swap_chain, present_option o)
                 {
                     std::unique_lock< std::mutex > g(m_queue_mutex);
                     const UINT op = o == present_option::wait_for_vsync ? 1 : 0;
